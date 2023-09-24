@@ -9,12 +9,20 @@
 <body>
     <div class="container">
         <h1>Quiz App</h1>
-        <label for="category">choose your category</label>
-        <select name="category" id="category">
-            <option value="Computer Science">Computer Science</option>
-            <option value="Biology">Biology</option>
-          </select>
+        <label class="category-label" for="category">choose your category</label>
+        <select name="category" id="category"> </select>
           <button type="submit" id="proceed">Proceed</button>
+    </div>
+
+    
+    <div id="quiz">
+        <h1 id="topic"></h1>
+        <div id="content">
+            <div id="app"></div>
+            <div id="buttons">
+           
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
