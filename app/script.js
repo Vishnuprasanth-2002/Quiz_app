@@ -289,20 +289,16 @@ function appendToContent() {
 }
 
 function setLocalStorageItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-  return true;
+  localStorage.setItem(key, value);
+  return ;
 }
 function getLocalStorageItem(key) {
-    const storedValue = localStorage.getItem(key);
-    return storedValue = JSON.parse(storedValue);
-  
+  return localStorage.getItem(key);
 }
 
 window.addEventListener("load", function () {
   const storedCategory = getLocalStorageItem("selectedCategory");
   if (storedCategory) {
-    // selectElement.value = storedCategory;
-    // document.getElementById("proceed").click();
     loadQuestionsFromCategory(storedCategory);
   }
 });
