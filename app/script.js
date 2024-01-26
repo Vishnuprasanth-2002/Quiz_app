@@ -14,24 +14,72 @@ const state = {
   ],
   questions: [
     {
-      id: 300,
-      question: "What color is the sky?",
+      id: 307,
+      question: "What is the purpose of an IP address?",
       options: [
-        { id: 10, text: "Blue", isCorrect: true },
-        { id: 20, text: "Red", isCorrect: false },
-        { id: 30, text: "Green", isCorrect: false },
+        {
+          id: 15,
+          text: "To identify a computer or device on a network",
+          isCorrect: true,
+        },
+        { id: 26, text: "To store data in memory", isCorrect: false },
+        { id: 37, text: "To connect to the internet", isCorrect: false },
+      ],
+      category: 1234,
+    },
+
+    {
+      id: 308,
+      question: "What does HTML stand for?",
+      options: [
+        { id: 16, text: "Hyper Text Markup Language", isCorrect: true },
+        { id: 27, text: "High-level Text Modeling Language", isCorrect: false },
+        { id: 38, text: "Home Tool for Modern Language", isCorrect: false },
+      ],
+      category: 1234,
+    },
+
+    {
+      id: 309,
+      question: "What does CSS stand for?",
+      options: [
+        { id: 17, text: "Cascading Style Sheets", isCorrect: true },
+        { id: 28, text: "Computer Style System", isCorrect: false },
+        { id: 39, text: "Code Syntax Structure", isCorrect: false },
+      ],
+      category: 1234,
+    },
+
+    {
+      id: 313,
+      question:
+        "Which part of the human body is responsible for pumping blood?",
+      options: [
+        { id: 22, text: "Heart", isCorrect: true },
+        { id: 33, text: "Lungs", isCorrect: false },
+        { id: 44, text: "Kidneys", isCorrect: false },
       ],
       category: 2345,
     },
     {
-      id: 301,
-      question: "Which is a CPU company?",
+      id: 312,
+      question: "What is the process by which plants make their own food?",
       options: [
-        { id: 10, text: "Intel", isCorrect: false },
-        { id: 20, text: "AMD", isCorrect: false },
-        { id: 30, text: "all the above", isCorrect: true },
+        { id: 21, text: "Photosynthesis", isCorrect: true },
+        { id: 32, text: "Respiration", isCorrect: false },
+        { id: 43, text: "Fermentation", isCorrect: false },
       ],
-      category: 1234,
+      category: 2345,
+    },
+    {
+      id: 311,
+      question: "What is the powerhouse of the cell?",
+      options: [
+        { id: 19, text: "Mitochondria", isCorrect: true },
+        { id: 30, text: "Nucleus", isCorrect: false },
+        { id: 40, text: "Endoplasmic Reticulum", isCorrect: false },
+      ],
+      category: 2345,
     },
   ],
   // page: "index", // 'question'
@@ -41,17 +89,7 @@ const selectElement = document.getElementById("category");
 let selectedValue = "";
 const quiz = document.querySelector("#quiz");
 quiz.style.display = "none";
-
-//   const category = [
-//     {
-//       name: "Computer science",
-//       value: "computer",
-//     },
-//     {
-//       name: "Biology",
-//       value: "bio",
-//     },
-//   ];
+loadQuestionsFromCategory;
 
 for (let sub of state.categories) {
   const option = document.createElement("option");
@@ -62,81 +100,35 @@ for (let sub of state.categories) {
   selectElement.appendChild(option);
 }
 
-function loadQuestionsFromCategory(selectedValue) {
-  const categoryIndex = state.categories.findIndex((item) => {
-    return item.value === selectedValue;
-  });
-  const getId = state.categories[categoryIndex].id;
-  console.log(getId);
+function loadQuestionsFromCategory(getId, name) {
+  console.log(getId, name);
   const container = document.querySelector(".container");
   container.style.display = "none";
   const quiz = document.querySelector("#quiz");
   quiz.style.display = "block";
-  setLocalStorageItem("selectedCategory", selectedValue);
+  const store = { id: getId, name: name };
+  localStorage.setItem("selectedCategory", JSON.stringify(store));
+
   clearContent();
   appendToContent();
   appendToButton();
-  updateUiList(getId);
+  updateUiList(getId, name);
 }
 
 // Get the selected value and move to the respected page when the button is clicked
 document.getElementById("proceed").addEventListener("click", function () {
   selectedValue = selectElement.value;
-  loadQuestionsFromCategory(selectedValue);
+  const categoryIndex = state.categories.findIndex((item) => {
+    return item.value == selectedValue;
+  });
+  const getId = state.categories[categoryIndex].id;
+  const name = state.categories[categoryIndex].name;
+  loadQuestionsFromCategory(getId, name);
 });
-//----------------------------------------------------------------------
-// function callQuestion(value){
 
-// const computer = [
-//   {
-//     id: "1",
-//     question: "Who is the father of Computer science?",
-//     options: ["Charles Babbage", "right brothers", "william", "livingston"],
-//     correctAns: "Charles Babbage",
-//   },
-//   {
-//     id: "2",
-//     question: "In a computer, most processing takes place in _______?",
-//     options: ["CPU", "mouse", "keyboard", "monitor"],
-//     correctAns: "CPU",
-//   },
-//   {
-//     id: "3",
-//     question: "Scientific Name of Computer?",
-//     options: ["Sillico sapiens", "Hybrid Computer", "Interpreter", "comdpromt"],
-//     correctAns: "Sillico sapiens",
-//   },
-// ];
-
-// const bio = [
-//   {
-//     id: "1",
-//     question: "The human heart is ",
-//     options: [" Neurogenic heart", "Myogenic heart", "Ampullary", "Pulsating"],
-//     correctAns: "Myogenic heart",
-//   },
-//   {
-//     id: "2",
-//     question: "Spermology is the study of ",
-//     options: ["Seed", "Leaf", "Fruit", "Pollen"],
-//     correctAns: "Seed",
-//   },
-//   {
-//     id: "3",
-//     question: "Who is known as father of Zoology ",
-//     options: ["Darwin", "Aristotle", "Aristotle", "Theophrastus"],
-//     correctAns: "Aristotle",
-//   },
-// ];
-
-// const questionCollection = {
-//   computer: computer,
-//   bio: bio,
-// };
-
-function updateUiList(value) {
+function updateUiList(value, name) {
   const question = state.questions.filter((item) => {
-    return item.category === value;
+    return item.category == value;
   });
   //  const getcategory=state.categories[categoryIndex].id;
 
@@ -146,17 +138,12 @@ function updateUiList(value) {
     app.appendChild(event);
   }
   const heading = document.querySelector("#topic");
-  heading.innerHTML = "welcome to quiz of " + value;
+  heading.innerHTML = `Welcome to ${name} Quiz App `;
 }
 function clearContent() {
   const content = document.querySelector("#content");
   content.innerHTML = "";
 }
-
-// const urlParams = new URLSearchParams(window.location.search);
-// const myType = urlParams.get("type");
-
-// console.log(questionCollection[myType]);
 
 function MakeQuestionList(mcq) {
   const div = document.createElement("div");
@@ -181,7 +168,7 @@ function MakeQuestionList(mcq) {
     inputRadio.setAttribute("type", "radio");
     inputRadio.setAttribute("id", `${mcq["options"][i]["id"]}`);
     inputRadio.setAttribute("name", `answer-${mcq["id"]}`);
-    inputRadio.value = mcq.options[i].text;
+    inputRadio.value = mcq.options[i].id;
 
     label.appendChild(inputRadio);
     label.appendChild(document.createTextNode(mcq.options[i]["text"]));
@@ -207,10 +194,10 @@ function MakeQuestionList(mcq) {
     if (selected) {
       const userAnswer = selected.value;
       const answerIndex = mcq["options"].findIndex(
-        (item) => item.text === userAnswer
+        (item) => item.id == userAnswer
       );
       const correctIndex = mcq["options"].findIndex(
-        (item) => item.isCorrect === true
+        (item) => item.isCorrect == true
       );
       if (mcq["options"][answerIndex].isCorrect) {
         // const crtAns=mcq["options"][answerIndex].text
@@ -230,11 +217,7 @@ function MakeQuestionList(mcq) {
       const correctIndex = mcq["options"].findIndex(
         (item) => item.isCorrect === true
       );
-      correctAnsShow(
-        mcq["options"][correctIndex].text,
-        `${mcq["id"]}`,
-        "orange"
-      );
+      correctAnsShow("please select Answer", `${mcq["id"]}`, "orange");
     }
   });
 
@@ -246,11 +229,11 @@ function correctAnsShow(ans, resultId, add) {
   const divId = `#question-${resultId}`;
   const divClass = "border-" + add;
   const div = document.querySelector(divId);
-  div.classList.add(divClass);
+  div.className = divClass;
   const selector = `#result-${resultId}`;
   const result = document.querySelector(selector);
+  result.className = add;
   result.innerHTML = "Ans: " + ans;
-  result.classList.add(add);
 }
 
 function appendToButton() {
@@ -289,16 +272,21 @@ function appendToContent() {
 }
 
 function setLocalStorageItem(key, value) {
+  // localStorage.setItem(key, JSON.stringify(value));
   localStorage.setItem(key, value);
-  return ;
+  console.log(value);
+  return true;
 }
 function getLocalStorageItem(key) {
   return localStorage.getItem(key);
 }
 
-window.addEventListener("load", function () {
-  const storedCategory = getLocalStorageItem("selectedCategory");
+function isSavedInlocalStorage() {
+  const storedCategory = JSON.parse(getLocalStorageItem("selectedCategory"));
   if (storedCategory) {
-    loadQuestionsFromCategory(storedCategory);
+    loadQuestionsFromCategory(storedCategory.id, storedCategory.name);
+    console.log(storedCategory.id);
+    console.log("hello");
   }
-});
+}
+isSavedInlocalStorage();
